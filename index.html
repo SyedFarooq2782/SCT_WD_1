@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Skillcraft</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #1f1c2c, #928dab);
+      --nav-bg: rgba(31, 31, 31, 0.9);
+      --text-color: #ffffff;
+      --accent-color: #ff8c00;
+      --dropdown-bg: #292929;
+      --hover-bg: #ff8c00;
+      --hover-text: #ffffff;
+      --button-border: #ff8c00;
+      --nav-scroll-bg: rgba(0, 0, 0, 0.95);
+      --nav-scroll-shadow: rgba(0, 0, 0, 0.8);
+      --logo-scroll-color: #ffcc70;
+    }
+
+    body.dark-mode {
+      --bg-gradient: linear-gradient(135deg, #ffffff, #d3d3d3);
+      --nav-bg: rgba(240, 240, 240, 0.95);
+      --text-color: #000000;
+      --accent-color: #ff6600;
+      --dropdown-bg: #ffffff;
+      --hover-bg: #ff6600;
+      --hover-text: #ffffff;
+      --button-border: #ff6600;
+      --nav-scroll-bg: rgba(255, 255, 255, 0.95);
+      --nav-scroll-shadow: rgba(0, 0, 0, 0.1);
+      --logo-scroll-color: #cc5200;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-color);
+      min-height: 100vh;
+      transition: background 0.5s, color 0.5s;
+    }
+
+    nav#navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: var(--nav-bg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1.5rem;
+      height: 60px;
+      z-index: 1000;
+      transition: background 0.3s, box-shadow 0.3s;
+      backdrop-filter: blur(10px);
+    }
+
+    nav#navbar.scrolled {
+      background: var(--nav-scroll-bg);
+      box-shadow: 0 4px 10px var(--nav-scroll-shadow);
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--accent-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.3s ease;
+    }
+
+    nav#navbar.scrolled .logo {
+      color: var(--logo-scroll-color);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 25px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      height: 3px;
+      background: var(--accent-color);
+      border-radius: 3px;
+      transition: all 0.3s;
+    }
+
+    .navbar {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .navbar li a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .navbar li a:hover {
+      background: var(--hover-bg);
+      color: var(--hover-text);
+      transform: scale(1.1);
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 45px;
+      left: 0;
+      background: var(--dropdown-bg);
+      border-radius: 10px;
+      padding: 0.5rem 0;
+      display: none;
+      flex-direction: column;
+      min-width: 200px;
+      box-shadow: 0 8px 20px #000000aa;
+      z-index: 999;
+    }
+
+    .dropdown a {
+      padding: 10px 20px;
+      color: var(--text-color);
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .dropdown a:hover {
+      background: var(--hover-bg);
+      color: var(--hover-text);
+    }
+
+    li.show .dropdown {
+      display: flex;
+    }
+
+    .lang-mode-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .lang-mode-buttons button {
+      background: transparent;
+      border: 2px solid var(--button-border);
+      color: var(--button-border);
+      padding: 6px 12px;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .lang-mode-buttons button:hover {
+      background: var(--hover-bg);
+      color: var(--hover-text);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 90px auto;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      transition: background 0.5s;
+    }
+
+    body.dark-mode .container {
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .container h2 {
+      color: var(--accent-color);
+      margin-bottom: 1rem;
+    }
+
+    .container p {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: var(--text-color);
+    }
+
+    @media (max-width: 768px) {
+      .hamburger {
+        display: flex;
+      }
+      .navbar {
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background: var(--nav-bg);
+        flex-direction: column;
+        padding: 1rem;
+        width: 220px;
+        display: none;
+        border-radius: 10px;
+      }
+      .navbar.show {
+        display: flex;
+      }
+      .navbar li {
+        width: 100%;
+      }
+      .navbar li .dropdown {
+        position: static;
+        box-shadow: none;
+      }
+      .navbar li .dropdown a {
+        padding-left: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav id="navbar">
+    <div class="logo"><i class="bi bi-book-half"></i> Skillcraft</div>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+    <ul class="navbar" id="menu">
+      <li><a href="#about">About</a></li>
+      <li>
+        <a href="#" class="dropdown-toggle">Features <i class="bi bi-caret-down-fill"></i></a>
+        <div class="dropdown">
+          <a href="#personalized">Personalized Learning</a>
+          <a href="#career">Career Guidance</a>
+          <a href="#scholarships">Scholarship Access</a>
+          <a href="#skill">Skill Development</a>
+        </div>
+      </li>
+      <li>
+        <a href="#" class="dropdown-toggle">Resources <i class="bi bi-caret-down-fill"></i></a>
+        <div class="dropdown">
+          <a href="#blog">Blog</a>
+          <a href="#tutorials">Tutorials</a>
+          <a href="#faqs">FAQs</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </li>
+      <li><a href="#contact">Contact</a></li>
+      <li class="lang-mode-buttons">
+        <button onclick="speakText()"><i class="bi bi-volume-up"></i></button>
+        <button onclick="stopSpeaking()"><i class="bi bi-stop-fill"></i></button>
+        <button onclick="document.body.classList.toggle('dark-mode')"><i class="bi bi-moon-fill"></i></button>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="container" id="about">
+    <h2>About Skillcraft Internship</h2>
+    <p id="about-text">
+      The Skillcraft Internship is a practical program designed to empower students with real-world web development experience. During the internship, participants learn HTML, CSS, and JavaScript through guided projects, workshops, and one-on-one mentorship. Interns build responsive websites, practice UI/UX design principles, and prepare for industry-level challenges while gaining exposure to modern tools and best coding practices.
+    </p>
+  </div>
+
+  <div class="container" id="personalized">
+    <h2>Personalized Learning</h2>
+    <p>Customized learning paths tailored to your interests and strengths. This feature ensures each intern masters the skills most relevant to their goals.</p>
+  </div>
+
+  <div class="container" id="career">
+    <h2>Career Guidance</h2>
+    <p>Access to mentorship, resume building, interview tips, and career roadmaps to prepare for jobs in the tech industry.</p>
+  </div>
+
+  <div class="container" id="scholarships">
+    <h2>Scholarship Access</h2>
+    <p>Stay updated with curated scholarships and funding opportunities that match your academic and career profile.</p>
+  </div>
+
+  <div class="container" id="skill">
+    <h2>Skill Development</h2>
+    <p>Hands-on coding sessions, peer collaboration, and continuous learning help you sharpen your technical and soft skills.</p>
+  </div>
+
+  <div class="container" id="blog">
+    <h2>Blog</h2>
+    <p>Coming soon: Articles on tech trends, project highlights, and student journeys during the internship.</p>
+  </div>
+
+  <div class="container" id="tutorials">
+    <h2>Tutorials</h2>
+    <p>Coming soon: Step-by-step guides and walkthroughs to reinforce learning and practical application.</p>
+  </div>
+
+  <div class="container" id="faqs">
+    <h2>FAQs</h2>
+    <p>Coming soon: Answers to common questions about the internship, participation, and outcomes.</p>
+  </div>
+
+  <div class="container" id="contact">
+    <h2>Contact</h2>
+    <p>Have questions? Reach out at <a href="mailto:syedumarfarooq2782@gmail.com">syedumarfarooq1872@gmail.com</a></p>
+  </div>
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const menu = document.getElementById('menu');
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    const navbar = document.getElementById('navbar');
+
+    hamburger.addEventListener('click', () => {
+      menu.classList.toggle('show');
+    });
+
+    dropdownToggles.forEach(toggle => {
+      toggle.addEventListener('click', e => {
+        e.preventDefault();
+        const li = toggle.parentElement;
+        li.classList.toggle('show');
+        dropdownToggles.forEach(other => {
+          if (other !== toggle) {
+            other.parentElement.classList.remove('show');
+          }
+        });
+      });
+    });
+
+    window.addEventListener('click', e => {
+      if (!e.target.closest('nav')) {
+        document.querySelectorAll('li.show').forEach(li => li.classList.remove('show'));
+      }
+    });
+
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 10);
+    });
+
+    function speakText() {
+      const text = document.getElementById('about-text').innerText;
+      const utterance = new SpeechSynthesisUtterance(text);
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    }
+
+    function stopSpeaking() {
+      speechSynthesis.cancel();
+    }
+  </script>
+</body>
+</html>
