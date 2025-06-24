@@ -49,10 +49,6 @@ Once you push this to a public GitHub repository and enable GitHub Pages, your r
 https://<your-github-username>.github.io/<repository-name>/
 ```
 
-Example for your profile:
-➡️ [https://SyedFarooq2782.github.io/SCT_WD_1/](https://SyedFarooq2782.github.io/SCT_WD_1/)
-
-
 ## 🚀 How to Run on Linux
 
 1. **Clone the Repository**
